@@ -1,102 +1,103 @@
-import {Component} from 'react'
-
-import {signInWithPopup} from 'firebase/auth'
-
-import {auth, provider} from '../googleSignIn/config'
-
-import ChatSection from '../ChatSection'
+import {IoMdSend} from 'react-icons/io'
+import {MdPerson} from 'react-icons/md'
 
 import './index.css'
 
-class LoginPage extends Component {
-  state = {username: '', showError: false, show: false, value: ''}
-
-  submitUserName = event => {
-    event.preventDefault()
-    const {username} = this.state
-
-    if (username === '') {
-      this.setState({show: false})
-      this.setState({showError: true})
-    } else {
-      this.setState({show: true})
-    }
-  }
-
-  onChangeUsername = event => {
-    const {username} = this.state
-    this.setState({username: event.target.value})
-    if (username.length >= 1) {
-      this.setState({showError: false})
-    }
-  }
-
-  onSubmitSuccess = () => {
-    const {username} = this.state
-
-    return <ChatSection name={username} />
-  }
-
-  handleClick = () => {
-    const {value} = this.state
-    signInWithPopup(auth, provider).then(data => {
-      this.setState((value: data.user.email))
-      localStorage.setItem('Email', data.user.email)
-    })
-  }
-
-  renderUsernameField = () => {
-    const {username, showError} = this.state
-
-    return (
-      <>
-        <h1 className="chat-hub-heading">Chat Hub</h1>
-        <label className="username-label" htmlFor="username">
-          USER NAME
-        </label>
-        <input
-          className="username-input"
-          id="username"
-          value={username}
-          type="text"
-          placeholder="Enter user name"
-          onChange={this.onChangeUsername}
-        />
-        <button className="enter-button" type="submit">
-          Enter
-        </button>
-
-        {showError && <p className="error-message">*Enter User name </p>}
-
-        <div className="sign-in-container">
-          <button
-            className="sign-in-button"
-            type="button"
-            onClick={this.handleClick}
+const ChatSection = props => {
+  const {name} = props
+  return (
+    <div className="chat-section-container">
+      <div className="all-user-container">
+        <h1 className="app-heading">ChatHub</h1>
+        <div className="users-container">
+          <h2
+            style={{
+              textAlign: 'center',
+              backgroundColor: 'lightgrey',
+              borderRadius: '5px',
+              fontSize: '25px',
+            }}
           >
-            Sign In
-          </button>
-        </div>
-      </>
-    )
-  }
+            All User
+          </h2>
+          <div className="names-container">
+            <div className="stored-username-container">
+              <MdPerson className="person-icon" />
+              <p className="stored-username">Sam Altman</p>
+            </div>
 
-  render() {
-    const {show} = this.state
-    return (
-      <div className="app-container">
-        {show ? (
-          this.onSubmitSuccess()
-        ) : (
-          <div className="login-container">
-            <form className="name-container" onSubmit={this.submitUserName}>
-              {this.renderUsernameField()}
-            </form>
+            <div className="stored-username-container">
+              <MdPerson className="person-icon" />
+              <p className="stored-username">Mark Zucker</p>
+            </div>
+
+            <div className="stored-username-container">
+              <MdPerson className="person-icon" />
+              <p className="stored-username">Tony</p>
+            </div>
+
+            <div className="stored-username-container">
+              <MdPerson className="person-icon" />
+              <p className="stored-username">Satya Nadella</p>
+            </div>
+            <div className="stored-username-container">
+              <MdPerson className="person-icon" />
+              <p className="stored-username">Sunder Pichai</p>
+            </div>
+            <div className="stored-username-container">
+              <MdPerson className="person-icon" />
+              <p className="stored-username">Steve Job</p>
+            </div>
+            <div className="stored-username-container">
+              <MdPerson className="person-icon" />
+              <p className="stored-username">Warren Buffett</p>
+            </div>
+            <div className="stored-username-container">
+              <MdPerson className="person-icon" />
+              <p className="stored-username">Nick Vujicic</p>
+            </div>
           </div>
-        )}
+        </div>
       </div>
-    )
-  }
+      <div className="chat-container">
+        <h1 className="user-name">Welcome {name}</h1>
+        <div className="chat-name">
+          <p className="chat-name-heading">Sam Altman</p>
+        </div>
+        <div className="chat">
+          <div>
+            <div className="receive">
+              <p className="receive-message">Hi, How are you ? </p>
+            </div>
+            <div className="send">
+              <p className="send-message">I am good, How are you ? </p>
+            </div>
+
+            <div className="receive">
+              <p className="receive-message">I am good too? </p>
+            </div>
+            <div className="receive">
+              <p className="receive-message">All set for Presentation? </p>
+            </div>
+
+            <div className="send">
+              <p className="send-message">Yes, Excited! </p>
+            </div>
+          </div>
+          <div className="type-send-container">
+            <input
+              type="text"
+              className="type-container"
+              placeholder="Type your message here...."
+            />
+            <div className="enter-icon-container">
+              <IoMdSend className="enter-icon" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
-export default LoginPage
+export default ChatSection
